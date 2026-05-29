@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERIN. Design Studio</title>
+  <!-- Tailwind CSS (Play CDN, 免安裝即時預覽用) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React + ReactDOM + Babel (UMD，瀏覽器直接執行 JSX) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style> body { margin: 0; } </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useEffect } = React;
+
+    /* ---------- 以內嵌 SVG 取代 lucide-react（免安裝套件） ---------- */
+    const makeIcon = (inner) => ({ size = 24, strokeWidth = 2, className = "" }) => (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        dangerouslySetInnerHTML={{ __html: inner }}
+      />
+    );
+
+    const Code = makeIcon('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>');
+    const Layout = makeIcon('<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/>');
+    const FileSpreadsheet = makeIcon('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/>');
+    const Database = makeIcon('<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>');
+    const CreditCard = makeIcon('<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>');
+    const Compass = makeIcon('<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>');
+    const Menu = makeIcon('<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>');
+    const X = makeIcon('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
+    const ArrowRight = makeIcon('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>');
+    const Clock = makeIcon('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>');
+    const Send = makeIcon('<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>');
+    const CheckCircle2 = makeIcon('<path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/>');
+    const Instagram = makeIcon('<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>');
+    const Mail = makeIcon('<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>');
+    const Linkedin = makeIcon('<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>');
+    const ChevronDown = makeIcon('<path d="m6 9 6 6 6-6"/>');
+
+    // 自訂 Threads 圖示組件
+    const ThreadsIcon = ({ className, strokeWidth = 2 }) => (
+      <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22.09 10.43c0 6.63-5.37 12-12 12A11.97 11.97 0 0 1 2 17.43"/>
+        <path d="M15.42 10.43a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
+        <path d="M15.42 10.43v1.6c0 1.77 1.43 3.2 3.2 3.2 1.77 0 3.2-1.43 3.2-3.2v-1.6c0-5.3-4.3-9.6-9.6-9.6s-9.6 4.3-9.6 9.6"/>
+      </svg>
+    );
+
+    const App = () => {
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+      const [bookingStatus, setBookingStatus] = useState('idle');
+      const [isLoaded, setIsLoaded] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => { setIsLoaded(true); }, 100);
+        const handleScroll = () => { setScrolled(window.scrollY > 80); };
+        window.addEventListener('scroll', handleScroll);
+        return () => { window.removeEventListener('scroll', handleScroll); clearTimeout(timer); };
+      }, []);
+
+      const handleBookingSubmit = (e) => {
+        e.preventDefault();
+        setBookingStatus('submitting');
+        setTimeout(() => {
+          setBookingStatus('success');
+          setTimeout(() => setBookingStatus('idle'), 5000);
+        }, 1500);
+      };
+
+      const scrollToSection = (id) => {
+        setIsMenuOpen(false);
+        const element = document.getElementById(id);
+        if (element) { element.scrollIntoView({ behavior: 'smooth' }); }
+      };
+
+      const openLink = (url) => {
+        if (url) { window.open(url, '_blank', 'noopener,noreferrer'); }
+      };
+
+      return (
+        <div className="min-h-screen bg-[#fafafa] font-sans text-neutral-900 selection:bg-neutral-900 selection:text-white overflow-x-hidden">
+          <style>{`
+            @keyframes maskReveal { 0% { transform: translateY(110%); } 100% { transform: translateY(0); } }
+            @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+            @keyframes bgSlowZoom { 0% { transform: scale(1.08); opacity: 0; filter: blur(10px); } 100% { transform: scale(1); opacity: 1; filter: blur(0px); } }
+            .clip-wrapper { overflow: hidden; padding-bottom: 0.1em; }
+            .animate-mask-reveal { transform: translateY(110%); animation: maskReveal 1.4s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+            .animate-fade-up { opacity: 0; animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+            .animate-bg-zoom { animation: bgSlowZoom 2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+            .delay-100 { animation-delay: 100ms; }
+            .delay-200 { animation-delay: 200ms; }
+            .delay-400 { animation-delay: 400ms; }
+            .delay-600 { animation-delay: 600ms; }
+            .delay-800 { animation-delay: 800ms; }
+          `}</style>
+
+          <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled ? 'bg-white/90 backdrop-blur-xl border-b border-neutral-100 py-4' : 'bg-transparent py-8'}`}>
+            <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+              <div className={`group cursor-pointer flex items-baseline gap-2 ${isLoaded ? 'animate-fade-up' : 'opacity-0'}`} onClick={() => scrollToSection('home')}>
+                <span className="text-2xl font-black tracking-tighter text-neutral-900 group-hover:text-neutral-600 transition-colors">ERIN.</span>
+                <span className={`text-xs font-medium tracking-[0.2em] uppercase transition-colors duration-500 hidden md:inline-block ${scrolled ? 'text-neutral-400' : 'text-neutral-500/80'}`}>Design Studio</span>
+              </div>
+              <nav className={`hidden md:flex items-center space-x-10 ${isLoaded ? 'animate-fade-up delay-100' : 'opacity-0'}`}>
+                {['Services', 'Works', 'Booking'].map((item, index) => {
+                  const ids = ['services', 'portfolio', 'booking'];
+                  return (
+                    <button key={item} onClick={() => scrollToSection(ids[index])} className={`text-sm font-medium tracking-wide uppercase relative overflow-hidden group transition-colors ${scrolled ? 'text-neutral-600 hover:text-neutral-900' : 'text-neutral-600 hover:text-neutral-900'}`}>
+                      {item}
+                      <span className="absolute bottom-0 left-0 w-full h-[1px] bg-neutral-900 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+                    </button>
+                  );
+                })}
+                <button onClick={() => scrollToSection('booking')} className={`px-6 py-2.5 text-xs tracking-widest uppercase font-bold rounded-none border transition-all duration-300 ${scrolled ? 'bg-neutral-900 border-neutral-900 text-white hover:bg-white hover:text-neutral-900' : 'bg-neutral-900/90 border-neutral-900 text-white hover:bg-white hover:text-neutral-900 backdrop-blur-sm'}`}>Let's Talk</button>
+              </nav>
+              <button className={`md:hidden text-neutral-900 z-50 ${isLoaded ? 'animate-fade-up' : 'opacity-0'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
+            <div className={`fixed inset-0 bg-neutral-900 text-white z-40 transition-transform duration-500 ease-in-out md:hidden flex flex-col justify-center items-center ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+              <div className="flex flex-col space-y-8 text-center w-full px-6">
+                {['Services', 'Works', 'Booking'].map((item, index) => {
+                  const ids = ['services', 'portfolio', 'booking'];
+                  const ch = ['專業服務', '精選作品', '預約諮詢'];
+                  return (
+                    <div key={item} className="overflow-hidden">
+                      <button onClick={() => scrollToSection(ids[index])} className="group flex flex-col items-center w-full">
+                        <span className="text-4xl font-light tracking-tighter uppercase mb-1">{item}</span>
+                        <span className="text-sm text-neutral-400 tracking-widest">{ch[index]}</span>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </header>
+
+          <section id="home" className="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-neutral-100">
+            <div className={`absolute inset-0 w-full h-full opacity-0 ${isLoaded ? 'animate-bg-zoom' : ''}`}>
+              <div className="absolute inset-0 bg-[#f4f4f5] opacity-50 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+              <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-gradient-to-b from-purple-200/40 to-transparent rounded-full blur-[100px]"></div>
+              <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-gradient-to-t from-neutral-200/60 to-transparent rounded-full blur-[120px]"></div>
+            </div>
+            <div className="relative z-10 container mx-auto px-6 md:px-12 flex flex-col items-center text-center mt-20">
+              <div className="clip-wrapper mb-6">
+                <h2 className={`text-sm md:text-base font-medium tracking-[0.3em] uppercase text-neutral-500 ${isLoaded ? 'animate-mask-reveal delay-100' : ''}`}>Crafting Digital Excellence</h2>
+              </div>
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-neutral-900 leading-[0.9] mb-8 w-full max-w-5xl mx-auto flex flex-col">
+                <div className="clip-wrapper"><span className={`block ${isLoaded ? 'animate-mask-reveal delay-200' : ''}`}>LOGIC</span></div>
+                <div className="clip-wrapper my-2 md:my-0"><span className={`block text-neutral-400 italic font-serif ${isLoaded ? 'animate-mask-reveal delay-400' : ''}`}>&</span></div>
+                <div className="clip-wrapper"><span className={`block ${isLoaded ? 'animate-mask-reveal delay-600' : ''}`}>AESTHETICS.</span></div>
+              </h1>
+              <p className={`text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed mb-12 font-light ${isLoaded ? 'animate-fade-up delay-800' : 'opacity-0'}`}>
+                艾琳設計工作室。將複雜的程式邏輯與商業需求，轉化為優雅且直覺的數位體驗。從一頁式網站到系統開發，為您的品牌打造頂級數位門面。
+              </p>
+              <div className={`flex flex-col sm:flex-row items-center gap-6 ${isLoaded ? 'animate-fade-up delay-800' : 'opacity-0'}`}>
+                <button onClick={() => scrollToSection('booking')} className="px-10 py-4 bg-neutral-900 text-white text-sm tracking-widest uppercase font-bold hover:bg-neutral-800 transition-colors flex items-center group">
+                  Start Project / 開始專案
+                  <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-2 transition-transform" />
+                </button>
+              </div>
+            </div>
+            <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce text-neutral-400 cursor-pointer ${isLoaded ? 'animate-fade-up delay-800' : 'opacity-0'}`} onClick={() => scrollToSection('services')}>
+              <span className="text-[10px] uppercase tracking-widest mb-2 font-medium">Scroll</span>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+          </section>
+
+          <section id="services" className="py-32 bg-white relative">
+            <div className="container mx-auto px-6 md:px-12">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div className="max-w-xl">
+                  <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Expertise</span>
+                  <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
+                  <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12 border-t border-neutral-200 pt-16">
+                {[
+                  { icon: <Code />, en: 'Development', title: '客製化程式開發', desc: '依據您的獨特商業邏輯，打造穩定、安全且高效的專屬 Web 應用程式與內部系統。' },
+                  { icon: <Layout />, en: 'Web Design', title: '一頁式網站設計', desc: '結合現代排版與流暢動態，打造高轉化率的 Landing Page，完美呈現品牌價值。' },
+                  { icon: <FileSpreadsheet />, en: 'Data Process', title: '複雜報表整理', desc: '將龐雜的數據結構化、視覺化，建立清晰易讀的自動化報表與儀表板。' },
+                  { icon: <Database />, en: 'Google Sheet API', title: 'Google Sheet 串接', desc: '靈活運用 Google 試算表作為輕量資料庫，實現低成本的自動化與資料同步。' },
+                  { icon: <CreditCard />, en: 'Payment', title: '付款金流串接', desc: '無縫整合台灣各大第三方支付（如綠界、藍新、Line Pay），打造順暢結帳體驗。' },
+                  { icon: <Compass />, en: 'Consulting', title: '品牌架構諮詢', desc: '為您的數位產品提供宏觀架構建議，從 UI/UX 到技術選型，規劃長期發展藍圖。' }
+                ].map((service, idx) => (
+                  <div key={idx} className="group cursor-default relative">
+                    <div className="text-neutral-300 mb-6 group-hover:text-neutral-900 transition-colors duration-300">
+                      {React.cloneElement(service.icon, { size: 32, strokeWidth: 1.5 })}
+                    </div>
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className="text-xs tracking-widest text-neutral-400 uppercase font-medium">{service.en}</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-4 text-neutral-900">{service.title}</h3>
+                    <p className="text-neutral-500 font-light leading-relaxed text-sm">{service.desc}</p>
+                    <div className="w-0 h-[1px] bg-neutral-900 mt-6 group-hover:w-full transition-all duration-500 ease-out"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="portfolio" className="py-32 bg-neutral-950 text-white">
+            <div className="container mx-auto px-6 md:px-12">
+              <div className="mb-20 text-center">
+                <span className="text-sm tracking-[0.2em] uppercase text-neutral-500 font-bold mb-4 block">Selected Works</span>
+                <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-6">精選專案案例</h2>
+              </div>
+              <div className="space-y-32">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 group cursor-pointer" onClick={() => openLink('https://lyric-video-three.vercel.app/')}>
+                  <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                    <div className="aspect-[4/3] w-full bg-neutral-800">
+                      <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=1200" alt="Lyric Video Creator / 動態歌詞生成系統" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                    <div className="flex gap-3 mb-6">
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Web App</span>
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">React</span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">Lyric Video Creator</h3>
+                    <h4 className="text-xl font-medium text-neutral-400 mb-4">動態歌詞生成系統</h4>
+                    <p className="text-neutral-400 font-light leading-relaxed mb-8">提供直覺的 Web 介面，結合音樂與文字渲染，讓使用者能快速將音軌與歌詞結合，在瀏覽器端直接預覽並生成具備設計感的動態歌詞效果。</p>
+                    <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-white group-hover:text-purple-300 transition-colors w-max">
+                      View Case / 查看案例 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-24 group cursor-default">
+                  <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                    <div className="aspect-[4/3] w-full bg-neutral-800">
+                      <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200" alt="AURA Coffee / 精品咖啡訂閱平台" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                    <div className="flex gap-3 mb-6">
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Web Design</span>
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Payment</span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">AURA Coffee/服飾</h3>
+                    <h4 className="text-xl font-medium text-neutral-400 mb-4">精品咖啡訂閱平台</h4>
+                    <p className="text-neutral-400 font-light leading-relaxed mb-8">為獨立精品咖啡品牌打造的專屬訂閱制網站。以極簡視覺凸顯產品高質感，後端串接綠界定期定額金流，實現完全自動化的訂閱與扣款流程。</p>
+                    <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-neutral-500 cursor-not-allowed w-max">Preparing Case...</div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 group cursor-pointer" onClick={() => openLink('https://tinyurl.com/dfprb4ft')}>
+                  <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                    <div className="aspect-[4/3] w-full bg-neutral-800">
+                      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" alt="Digital Experience / 專屬數位服務平台" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                    <div className="flex gap-3 mb-6">
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Web Design</span>
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Fullstack</span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">Digital Experience</h3>
+                    <h4 className="text-xl font-medium text-neutral-400 mb-4">專屬數位服務平台</h4>
+                    <p className="text-neutral-400 font-light leading-relaxed mb-8">結合現代排版與流暢的前端動態，為品牌打造高度客製化的線上互動體驗，兼具視覺美感與效能，有效提升品牌形象、使用者黏著度與轉化率。</p>
+                    <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-white group-hover:text-purple-300 transition-colors w-max">
+                      View Case / 查看案例 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-24 group cursor-pointer" onClick={() => openLink('https://tinyurl.com/dfprb4ft')}>
+                  <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                    <div className="aspect-[4/3] w-full bg-neutral-800">
+                      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200" alt="SyncTech Dashboard / 進銷存管理儀表板" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                    <div className="flex gap-3 mb-6">
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">System</span>
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Google Sheet</span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">SyncTech Dashboard</h3>
+                    <h4 className="text-xl font-medium text-neutral-400 mb-4">進銷存管理儀表板</h4>
+                    <p className="text-neutral-400 font-light leading-relaxed mb-8">替中小型企業量身打造的內部管理工具。利用 Google Sheet API 作為輕量級資料中心，開發直覺的網頁介面，大幅降低員工處理複雜報表的時間成本。</p>
+                    <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-white group-hover:text-purple-300 transition-colors w-max">
+                      View Case / 查看案例 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 group cursor-pointer" onClick={() => openLink('https://nearby-places-app.vercel.app/')}>
+                  <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                    <div className="aspect-[4/3] w-full bg-neutral-800">
+                      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1200" alt="Nearby Places Explorer / 鄰近地標探索系統" className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out" />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                    <div className="flex gap-3 mb-6">
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">Map API</span>
+                      <span className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">LBS</span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">Nearby Places Explorer</h3>
+                    <h4 className="text-xl font-medium text-neutral-400 mb-4">鄰近地標探索系統</h4>
+                    <p className="text-neutral-400 font-light leading-relaxed mb-8">深度整合第三方地圖 API 與 LBS (適地性服務)，打造流暢的地標探索工具，自動偵測用戶位置，讓使用者能輕鬆、直覺地發掘周遭的熱門景點與店家資訊。</p>
+                    <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-white group-hover:text-purple-300 transition-colors w-max">
+                      View Case / 查看案例 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="booking" className="py-32 bg-[#fafafa]">
+            <div className="container mx-auto px-6 md:px-12 max-w-6xl">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
+                <div className="lg:col-span-2 flex flex-col justify-between">
+                  <div>
+                    <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Let's Connect</span>
+                    <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-8 leading-[1.1]">準備好啟動<br/>您的專案了嗎？</h2>
+                    <p className="text-neutral-600 font-light leading-relaxed mb-12">填寫右方表單與我聯繫。無論是商業網站建置、系統開發委託，或是報名「網頁前端設計」一對一課程，我都會在 24 小時內親自回覆您。</p>
+                  </div>
+                  <div className="space-y-8 border-t border-neutral-200 pt-8">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-900"><Mail className="w-4 h-4" /></div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-400 mb-1">Email / 電子信箱</h4>
+                        <p className="text-sm font-medium">erin20080306@gmail.com</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-900"><Clock className="w-4 h-4" /></div>
+                      <div>
+                        <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-400 mb-1">聯絡時間</h4>
+                        <p className="text-sm font-medium">Mon - Fri, 10:00 - 18:00 (TPE)</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="lg:col-span-3">
+                  <div className="bg-white p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-neutral-100">
+                    {bookingStatus === 'success' ? (
+                      <div className="flex flex-col items-center justify-center h-full min-h-[500px] text-center">
+                        <CheckCircle2 className="w-16 h-16 text-neutral-900 mb-6" strokeWidth={1.5} />
+                        <h3 className="text-3xl font-black tracking-tighter mb-4">Request Sent.</h3>
+                        <p className="text-neutral-500 font-light">感謝您的來信，我已收到您的需求資訊。<br/>我將盡快與您聯繫並安排後續會議。</p>
+                        <button onClick={() => setBookingStatus('idle')} className="mt-10 px-8 py-3 border border-neutral-900 text-sm tracking-widest uppercase font-bold hover:bg-neutral-900 hover:text-white transition-colors">Back to Form / 返回表單</button>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleBookingSubmit} className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-3 relative group">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Name / 姓名 *</label>
+                            <input required type="text" placeholder="您的姓名或公司名稱" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                          </div>
+                          <div className="space-y-3 relative group">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Phone / 聯絡電話 *</label>
+                            <input required type="tel" placeholder="09XX-XXX-XXX" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-3 relative group">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Email / 電子信箱 *</label>
+                            <input required type="email" placeholder="example@mail.com" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                          </div>
+                          <div className="space-y-3">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Service / 服務類型 *</label>
+                            <select required className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer">
+                              <option value="" disabled selected hidden>請選擇服務項目...</option>
+                              <option value="web">一頁式網站 (Web Design)</option>
+                              <option value="code">程式開發 (Development)</option>
+                              <option value="sheet">報表整理 (Data Process)</option>
+                              <option value="payment">金流串接 (Payment API)</option>
+                              <option value="course">教學課程 (Course)</option>
+                              <option value="other">其他需求 (Others)</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Preferred Date / 希望日期</label>
+                            <input type="date" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium uppercase" />
+                          </div>
+                          <div className="space-y-3">
+                            <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Preferred Time / 希望時間</label>
+                            <select className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer">
+                              <option value="">不指定 (Anytime)</option>
+                              <option value="morning">上午 (Morning 10:00 - 12:00)</option>
+                              <option value="afternoon">下午 (Afternoon 13:00 - 18:00)</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Message / 詳細需求</label>
+                          <textarea rows="4" placeholder="請簡述您的專案需求、商業目標，或是想學習的內容..." className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium resize-none"></textarea>
+                        </div>
+                        <div className="pt-4">
+                          <button type="submit" disabled={bookingStatus === 'submitting'} className="w-full py-4 bg-[#111111] text-white text-[13px] tracking-[0.15em] font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center disabled:opacity-50 cursor-pointer">
+                            {bookingStatus === 'submitting' ? (
+                              <span className="tracking-widest">SENDING... / 傳送中...</span>
+                            ) : (
+                              <span className="flex items-center tracking-widest">SUBMIT INQUIRY / 送出預約 <Send className="w-[18px] h-[18px] ml-3" strokeWidth={2} /></span>
+                            )}
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <footer id="footer" className="bg-neutral-950 text-white py-20">
+            <div className="container mx-auto px-6 md:px-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+                <div className="lg:col-span-2">
+                  <div className="text-3xl font-black tracking-tighter mb-4">ERIN.</div>
+                  <p className="text-neutral-500 font-light text-sm max-w-sm mb-6">專注於程式開發與數位設計的獨立工作室。致力於將複雜的商業邏輯化為優雅的數位體驗。</p>
+                  <div className="flex space-x-4">
+                    <a href="https://www.instagram.com/erin19921122?igsh=d3Q2Z21ia25oZzhv&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Instagram className="w-4 h-4" /></a>
+                    <a href="https://www.threads.com/@erin19921122?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><ThreadsIcon className="w-4 h-4" /></a>
+                    <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-6">Navigation / 網站導覽</h4>
+                  <ul className="space-y-4">
+                    {[
+                      { label: 'Services / 專業服務', id: 'services' },
+                      { label: 'Works / 精選作品', id: 'portfolio' },
+                      { label: 'Booking / 預約諮詢', id: 'booking' }
+                    ].map((item) => (
+                      <li key={item.id}>
+                        <button onClick={() => scrollToSection(item.id)} className="text-neutral-400 hover:text-white text-sm transition-colors text-left">{item.label}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-6">Legal / 法律聲明</h4>
+                  <ul className="space-y-4">
+                    <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Privacy Policy / 隱私權政策</a></li>
+                    <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Terms of Service / 服務條款</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-600 tracking-wider">
+                <p>&copy; {new Date().getFullYear()} ERIN DESIGN STUDIO. ALL RIGHTS RESERVED.</p>
+                <p className="mt-4 md:mt-0">TAIPEI, TAIWAN</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
