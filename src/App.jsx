@@ -23,6 +23,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [bookingStatus, setBookingStatus] = useState('idle');
+  const [bookingError, setBookingError] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
 
   // 處理進場動畫與導覽列滾動效果
@@ -33,13 +34,34 @@ const App = () => {
     return () => { window.removeEventListener('scroll', handleScroll); clearTimeout(timer); };
   }, []);
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
     setBookingStatus('submitting');
-    setTimeout(() => {
+    setBookingError('');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+    const bookingApiUrl = import.meta.env.VITE_BOOKING_API_URL || 'https://eileen-design.vercel.app/api/booking';
+
+    try {
+      const response = await fetch(bookingApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Booking request failed');
+      }
+
+      form.reset();
       setBookingStatus('success');
       setTimeout(() => setBookingStatus('idle'), 5000);
-    }, 1500);
+    } catch (error) {
+      setBookingError('表單暫時無法送出，請稍後再試，或直接寄信到 erin20080306@gmail.com。');
+      setBookingStatus('idle');
+    }
   };
 
   const scrollToSection = (id) => {
@@ -327,29 +349,31 @@ const App = () => {
                   <div className="flex flex-col items-center justify-center h-full min-h-[500px] text-center animate-in fade-in duration-700">
                     <CheckCircle2 className="w-16 h-16 text-neutral-900 mb-6" strokeWidth={1.5} />
                     <h3 className="text-3xl font-black tracking-tighter mb-4">Request Sent.</h3>
+                    <p className="text-lg font-bold text-neutral-900 mb-3">已送出表單</p>
                     <p className="text-neutral-500 font-light">感謝您的來信，我已收到您的需求資訊。<br/>我將盡快與您聯繫並安排後續會議。</p>
                     <button onClick={() => setBookingStatus('idle')} className="mt-10 px-8 py-3 border border-neutral-900 text-sm tracking-widest uppercase font-bold hover:bg-neutral-900 hover:text-white transition-colors">Back to Form / 返回表單</button>
                   </div>
                 ) : (
                   <form onSubmit={handleBookingSubmit} className="space-y-8">
+                    <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-3 relative group">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Name / 姓名 *</label>
-                        <input required type="text" placeholder="您的姓名或公司名稱" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                        <input required type="text" name="name" placeholder="您的姓名或公司名稱" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
                       </div>
                       <div className="space-y-3 relative group">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Phone / 聯絡電話 *</label>
-                        <input required type="tel" placeholder="09XX-XXX-XXX" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                        <input required type="tel" name="phone" placeholder="09XX-XXX-XXX" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-3 relative group">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Email / 電子信箱 *</label>
-                        <input required type="email" placeholder="example@mail.com" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
+                        <input required type="email" name="email" placeholder="example@mail.com" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium" />
                       </div>
                       <div className="space-y-3">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Service / 服務類型 *</label>
-                        <select required className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer" defaultValue="">
+                        <select required name="service" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer" defaultValue="">
                           <option value="" disabled hidden>請選擇服務項目...</option>
                           <option value="web">一頁式網站 (Web Design)</option>
                           <option value="code">程式開發 (Development)</option>
@@ -363,11 +387,11 @@ const App = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Preferred Date / 希望日期</label>
-                        <input type="date" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium uppercase" />
+                        <input type="date" name="preferredDate" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium uppercase" />
                       </div>
                       <div className="space-y-3">
                         <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Preferred Time / 希望時間</label>
-                        <select className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer" defaultValue="">
+                        <select name="preferredTime" className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 text-sm font-medium appearance-none cursor-pointer" defaultValue="">
                           <option value="">不指定 (Anytime)</option>
                           <option value="morning">上午 (Morning 10:00 - 12:00)</option>
                           <option value="afternoon">下午 (Afternoon 13:00 - 18:00)</option>
@@ -376,8 +400,11 @@ const App = () => {
                     </div>
                     <div className="space-y-3">
                       <label className="text-[11px] uppercase tracking-widest font-bold text-neutral-400 block">Message / 詳細需求</label>
-                      <textarea rows="4" placeholder="請簡述您的專案需求、商業目標，或是想學習的內容..." className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium resize-none"></textarea>
+                      <textarea rows="4" name="message" placeholder="請簡述您的專案需求、商業目標，或是想學習的內容..." className="w-full bg-transparent border-b border-neutral-300 py-2 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 placeholder-neutral-300 text-sm font-medium resize-none"></textarea>
                     </div>
+                    {bookingError && (
+                      <p className="text-sm font-medium text-red-600">{bookingError}</p>
+                    )}
                     <div className="pt-4">
                       <button type="submit" disabled={bookingStatus === 'submitting'} className="w-full py-4 bg-[#111111] text-white text-[13px] tracking-[0.15em] font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center disabled:opacity-50 cursor-pointer">
                         {bookingStatus === 'submitting' ? (
