@@ -10,6 +10,7 @@ const serviceLabels = {
 };
 
 const allowedOrigins = [
+  'https://erin.is-a.dev',
   'https://eileen-design.pages.dev',
   'https://eileen-design.vercel.app',
   'http://localhost:5173',
