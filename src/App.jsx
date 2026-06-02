@@ -443,7 +443,7 @@ const App = () => {
                 <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
               </div>
               <div className="mt-6 max-w-lg">
-                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-3">專業認證書連結</h4>
+                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-3">GOOGLE專業認證書連結</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {certificates.map((certificate) => (
                     <button
