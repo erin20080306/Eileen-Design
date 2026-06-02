@@ -26,6 +26,8 @@ const App = () => {
   const [bookingError, setBookingError] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(null);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   // 處理進場動畫與導覽列滾動效果
   useEffect(() => {
@@ -96,6 +98,48 @@ const App = () => {
       title: 'Google Analytics（分析）認證',
       image: '/certificates/IMG_8414.jpeg',
       label: 'GA分析 / 認證證書',
+    },
+  ];
+
+  const privacySections = [
+    {
+      title: '資料蒐集',
+      body: '當您填寫預約或聯絡表單時，本網站可能會蒐集姓名、電話、Email、服務需求、希望日期與留言內容，用於回覆諮詢與安排後續聯繫。',
+    },
+    {
+      title: '資料使用',
+      body: '您的資料僅用於 ERIN Design Studio 專案溝通、服務回覆與必要的客戶聯繫，不會出售、出租或任意提供給無關第三方。',
+    },
+    {
+      title: '第三方服務',
+      body: '本網站可能使用 Vercel、Cloudflare Web Analytics、Google 相關服務或表單通知工具，以維持網站運作、流量分析與訊息傳遞。',
+    },
+    {
+      title: '聯絡方式',
+      body: '若您希望查詢、修改或刪除已提交的個人資料，請來信至 erin20080306@gmail.com，我們會協助處理。',
+    },
+  ];
+
+  const termsSections = [
+    {
+      title: '服務範圍',
+      body: 'ERIN Design Studio 提供網頁設計、程式開發、資料整理、自動化串接、金流串接與相關數位服務。實際服務內容、時程與費用以雙方確認的報價、合約或書面溝通為準。',
+    },
+    {
+      title: '預約與溝通',
+      body: '您透過本網站送出表單後，代表您同意我們依您提供的聯絡資訊回覆需求、安排諮詢或進行後續專案討論。',
+    },
+    {
+      title: '智慧財產權',
+      body: '專案完成前所提供的提案、設計稿、程式架構與文件仍屬 ERIN Design Studio 或原權利人所有。交付範圍與授權方式依雙方約定為準。',
+    },
+    {
+      title: '網站內容',
+      body: '本網站內容僅作為服務介紹與聯絡用途。我們會盡力維持資訊正確，但不保證所有內容在任何時間皆完整、即時或無誤。',
+    },
+    {
+      title: '條款調整',
+      body: 'ERIN Design Studio 保留視服務需求或網站營運狀況調整本條款的權利，更新後將公布於本網站。',
     },
   ];
 
@@ -495,8 +539,24 @@ const App = () => {
             <div>
               <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-6">Legal / 法律聲明</h4>
               <ul className="space-y-4">
-                <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Privacy Policy / 隱私權政策</a></li>
-                <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Terms of Service / 服務條款</a></li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setIsPrivacyOpen(true)}
+                    className="text-neutral-400 hover:text-white text-sm transition-colors text-left"
+                  >
+                    Privacy Policy / 隱私權政策
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setIsTermsOpen(true)}
+                    className="text-neutral-400 hover:text-white text-sm transition-colors text-left"
+                  >
+                    Terms of Service / 服務條款
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -532,6 +592,84 @@ const App = () => {
             alt={activeCertificate.title}
             className="relative z-10 max-h-[88vh] max-w-full bg-white object-contain shadow-2xl"
           />
+        </div>
+      )}
+      {isPrivacyOpen && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="隱私權政策"
+        >
+          <button
+            type="button"
+            onClick={() => setIsPrivacyOpen(false)}
+            className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:bg-neutral-200 transition-colors"
+            aria-label="Close privacy policy"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            className="absolute inset-0 z-0 cursor-default"
+            onClick={() => setIsPrivacyOpen(false)}
+            aria-label="Close privacy policy"
+          />
+          <div className="relative z-10 w-full max-w-2xl max-h-[86vh] overflow-y-auto bg-white text-neutral-900 p-8 md:p-10 shadow-2xl">
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-neutral-400 mb-4">Privacy Policy</p>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-4">隱私權聲明</h2>
+            <p className="text-sm leading-7 text-neutral-600 mb-8">
+              ERIN Design Studio 重視您的個人資料與隱私。本聲明說明本網站如何蒐集、使用與保護您主動提供的資料。
+            </p>
+            <div className="space-y-6">
+              {privacySections.map((section) => (
+                <section key={section.title}>
+                  <h3 className="text-sm font-bold tracking-widest text-neutral-900 mb-2">{section.title}</h3>
+                  <p className="text-sm leading-7 text-neutral-600">{section.body}</p>
+                </section>
+              ))}
+            </div>
+            <p className="mt-8 pt-6 border-t border-neutral-200 text-xs text-neutral-400">最後更新：2026 年 6 月 2 日</p>
+          </div>
+        </div>
+      )}
+      {isTermsOpen && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="服務條款"
+        >
+          <button
+            type="button"
+            onClick={() => setIsTermsOpen(false)}
+            className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:bg-neutral-200 transition-colors"
+            aria-label="Close terms of service"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            className="absolute inset-0 z-0 cursor-default"
+            onClick={() => setIsTermsOpen(false)}
+            aria-label="Close terms of service"
+          />
+          <div className="relative z-10 w-full max-w-2xl max-h-[86vh] overflow-y-auto bg-white text-neutral-900 p-8 md:p-10 shadow-2xl">
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-neutral-400 mb-4">Terms of Service</p>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-4">服務條款聲明</h2>
+            <p className="text-sm leading-7 text-neutral-600 mb-8">
+              歡迎使用 ERIN Design Studio 網站。使用本網站或送出聯絡表單，即表示您了解並同意以下基本服務條款。
+            </p>
+            <div className="space-y-6">
+              {termsSections.map((section) => (
+                <section key={section.title}>
+                  <h3 className="text-sm font-bold tracking-widest text-neutral-900 mb-2">{section.title}</h3>
+                  <p className="text-sm leading-7 text-neutral-600">{section.body}</p>
+                </section>
+              ))}
+            </div>
+            <p className="mt-8 pt-6 border-t border-neutral-200 text-xs text-neutral-400">最後更新：2026 年 6 月 2 日</p>
+          </div>
         </div>
       )}
     </div>
