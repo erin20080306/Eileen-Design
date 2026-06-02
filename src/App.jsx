@@ -77,10 +77,26 @@ const App = () => {
   };
 
   const certificates = [
-    { title: '運用需求開發創造需求並促成轉換', image: '/certificates/IMG_8425.jpeg' },
-    { title: '從業人員適用的 AI 技術輔助搜尋廣告基礎課程', image: '/certificates/IMG_8426.jpeg' },
-    { title: 'Google AI 技術輔助高效廣告認證', image: '/certificates/IMG_8427.jpeg' },
-    { title: 'Google Analytics（分析）認證', image: '/certificates/IMG_8414.jpeg' },
+    {
+      title: '運用需求開發創造需求並促成轉換',
+      image: '/certificates/IMG_8425.jpeg',
+      label: '需求開發 / 轉換認證',
+    },
+    {
+      title: '從業人員適用的 AI 技術輔助搜尋廣告基礎課程',
+      image: '/certificates/IMG_8426.jpeg',
+      label: 'AI搜尋 / 廣告基礎',
+    },
+    {
+      title: 'Google AI 技術輔助高效廣告認證',
+      image: '/certificates/IMG_8427.jpeg',
+      label: 'AI高效 / 廣告認證',
+    },
+    {
+      title: 'Google Analytics（分析）認證',
+      image: '/certificates/IMG_8414.jpeg',
+      label: 'GA分析 / 認證證書',
+    },
   ];
 
   return (
@@ -442,20 +458,22 @@ const App = () => {
                 <a href="https://www.threads.com/@erin19921122?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><ThreadsIcon className="w-4 h-4" /></a>
                 <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
               </div>
-              <div className="mt-6 max-w-lg">
-                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-3">GOOGLE專業認證書連結</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="mt-6">
+                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">GOOGLE / 專業認證書連結</h4>
+                <ul className="space-y-3">
                   {certificates.map((certificate) => (
-                    <button
-                      key={certificate.title}
-                      type="button"
-                      onClick={() => setActiveCertificate(certificate)}
-                      className="text-left border border-neutral-800 px-3 py-2 text-xs leading-relaxed text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors"
-                    >
-                      {certificate.title}
-                    </button>
+                    <li key={certificate.title}>
+                      <button
+                        type="button"
+                        onClick={() => setActiveCertificate(certificate)}
+                        title={certificate.title}
+                        className="text-neutral-400 hover:text-white text-sm transition-colors text-left whitespace-nowrap"
+                      >
+                        {certificate.label}
+                      </button>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
             {/* 更新後的雙語 Navigation 區塊 */}
