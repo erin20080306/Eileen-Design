@@ -25,6 +25,7 @@ const App = () => {
   const [bookingStatus, setBookingStatus] = useState('idle');
   const [bookingError, setBookingError] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [activeCertificate, setActiveCertificate] = useState(null);
 
   // 處理進場動畫與導覽列滾動效果
   useEffect(() => {
@@ -74,6 +75,13 @@ const App = () => {
   const openLink = (url) => {
     if (url) { window.open(url, '_blank', 'noopener,noreferrer'); }
   };
+
+  const certificates = [
+    { title: '運用需求開發創造需求並促成轉換', image: '/certificates/IMG_8425.jpeg' },
+    { title: '從業人員適用的 AI 技術輔助搜尋廣告基礎課程', image: '/certificates/IMG_8426.jpeg' },
+    { title: 'Google AI 技術輔助高效廣告認證', image: '/certificates/IMG_8427.jpeg' },
+    { title: 'Google Analytics（分析）認證', image: '/certificates/IMG_8414.jpeg' },
+  ];
 
   return (
     <div className="min-h-screen bg-[#fafafa] font-sans text-neutral-900 selection:bg-neutral-900 selection:text-white overflow-x-hidden">
@@ -459,12 +467,58 @@ const App = () => {
               </ul>
             </div>
           </div>
+          <div className="border-t border-neutral-900 pt-12 mb-12">
+            <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-6">Certifications / 專業認證</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {certificates.map((certificate) => (
+                <button
+                  key={certificate.title}
+                  type="button"
+                  onClick={() => setActiveCertificate(certificate)}
+                  className="text-left min-h-[120px] border border-neutral-800 p-5 hover:border-white transition-colors group"
+                >
+                  <span className="text-xs uppercase tracking-widest text-neutral-600 block mb-4">Certificate</span>
+                  <span className="text-sm leading-relaxed text-neutral-300 group-hover:text-white transition-colors">
+                    {certificate.title}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-600 tracking-wider">
             <p>&copy; {new Date().getFullYear()} ERIN DESIGN STUDIO. ALL RIGHTS RESERVED.</p>
             <p className="mt-4 md:mt-0">TAIPEI, TAIWAN</p>
           </div>
         </div>
       </footer>
+      {activeCertificate && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeCertificate.title}
+        >
+          <button
+            type="button"
+            onClick={() => setActiveCertificate(null)}
+            className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:bg-neutral-200 transition-colors"
+            aria-label="Close certificate"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            className="absolute inset-0 z-0 cursor-default"
+            onClick={() => setActiveCertificate(null)}
+            aria-label="Close certificate preview"
+          />
+          <img
+            src={activeCertificate.image}
+            alt={activeCertificate.title}
+            className="relative z-10 max-h-[88vh] max-w-full bg-white object-contain shadow-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 };
