@@ -442,6 +442,21 @@ const App = () => {
                 <a href="https://www.threads.com/@erin19921122?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><ThreadsIcon className="w-4 h-4" /></a>
                 <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
               </div>
+              <div className="mt-6 max-w-lg">
+                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-3">專業認證書連結</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {certificates.map((certificate) => (
+                    <button
+                      key={certificate.title}
+                      type="button"
+                      onClick={() => setActiveCertificate(certificate)}
+                      className="text-left border border-neutral-800 px-3 py-2 text-xs leading-relaxed text-neutral-400 hover:text-white hover:border-neutral-500 transition-colors"
+                    >
+                      {certificate.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             {/* 更新後的雙語 Navigation 區塊 */}
             <div>
@@ -465,24 +480,6 @@ const App = () => {
                 <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Privacy Policy / 隱私權政策</a></li>
                 <li><a href="#" className="text-neutral-400 hover:text-white text-sm transition-colors">Terms of Service / 服務條款</a></li>
               </ul>
-            </div>
-          </div>
-          <div className="border-t border-neutral-900 pt-12 mb-12">
-            <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-6">Certifications / 專業認證</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {certificates.map((certificate) => (
-                <button
-                  key={certificate.title}
-                  type="button"
-                  onClick={() => setActiveCertificate(certificate)}
-                  className="text-left min-h-[120px] border border-neutral-800 p-5 hover:border-white transition-colors group"
-                >
-                  <span className="text-xs uppercase tracking-widest text-neutral-600 block mb-4">Certificate</span>
-                  <span className="text-sm leading-relaxed text-neutral-300 group-hover:text-white transition-colors">
-                    {certificate.title}
-                  </span>
-                </button>
-              ))}
             </div>
           </div>
           <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-600 tracking-wider">
