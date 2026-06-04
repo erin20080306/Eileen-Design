@@ -270,24 +270,24 @@ const App = () => {
       {/* 服務項目 (Services) */}
       <section id="services" className="py-32 bg-white relative">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-10 mb-20">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-10 mb-12">
             <div className="max-w-xl">
               <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Expertise</span>
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
             </div>
-            <div className="w-full max-w-xl border-l border-neutral-200 pl-5 space-y-4 md:mt-9">
-              <div className="space-y-1.5">
-                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">I build modern web applications with React, Next.js,</p>
-                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">TypeScript, APIs, databases, and cloud deployment.</p>
-                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">My projects focus on clean UI, measurable performance,</p>
-                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">and business-oriented results.</p>
+            <div className="w-full max-w-xl border-l border-neutral-200 pl-5 space-y-3 md:mt-10">
+              <div className="space-y-1">
+                <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">I build modern web applications with React, Next.js,</p>
+                <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">TypeScript, APIs, databases, and cloud deployment.</p>
+                <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">My projects focus on clean UI, measurable performance,</p>
+                <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">and business-oriented results.</p>
               </div>
-              <div className="space-y-1.5">
-                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">我使用 React、Next.js、TypeScript、API、</p>
-                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">資料庫與雲端部署打造現代化網站與應用程式。</p>
-                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">我的作品不只注重介面設計，也重視效能、</p>
-                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">數據追蹤與商業轉換成果。</p>
+              <div className="space-y-1">
+                <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">我使用 React、Next.js、TypeScript、API、</p>
+                <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">資料庫與雲端部署打造現代化網站與應用程式。</p>
+                <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">我的作品不只注重介面設計，也重視效能、</p>
+                <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">數據追蹤與商業轉換成果。</p>
               </div>
             </div>
           </div>
