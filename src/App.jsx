@@ -672,6 +672,29 @@ const App = () => {
                   </ul>
                 </div>
               </div>
+              <div className="mt-10 border-t border-neutral-900 pt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-white mb-5">AI & Analytics Certifications</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {[certificates[2], certificates[3], claudeCertificates[0], claudeCertificates[1]].map((certificate) => (
+                        <button
+                          key={certificate.title}
+                          type="button"
+                          onClick={() => setActiveCertificate(certificate)}
+                          title={certificate.title}
+                          className="border border-neutral-800 px-4 py-3 text-left hover:border-neutral-500 transition-colors"
+                        >
+                          <span className="block text-sm font-semibold text-neutral-200 leading-snug">{certificate.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-sm leading-7 text-neutral-400 font-medium lg:pt-11">
+                    我將 AI 輔助開發、網站數據追蹤與轉換優化應用在實際專案中，協助客戶建立更有效率、可衡量成效的數位系統。
+                  </p>
+                </div>
+              </div>
             </div>
             {/* 更新後的雙語 Navigation 區塊 */}
             <div>
