@@ -26,6 +26,7 @@ const App = () => {
   const [bookingError, setBookingError] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(null);
+  const [activePresentation, setActivePresentation] = useState(null);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
 
@@ -78,6 +79,11 @@ const App = () => {
     if (url) { window.open(url, '_blank', 'noopener,noreferrer'); }
   };
 
+  const getPresentationViewerUrl = (file) => {
+    const publicUrl = `${window.location.origin}${file}`;
+    return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(publicUrl)}`;
+  };
+
   const certificates = [
     {
       title: '運用需求開發創造需求並促成轉換',
@@ -98,6 +104,25 @@ const App = () => {
       title: 'Google Analytics（分析）認證',
       image: '/certificates/IMG_8414.jpeg',
       label: 'GA分析 / 認證證書',
+    },
+  ];
+
+  const presentationCases = [
+    {
+      title: 'GAS廣告企劃報告',
+      subtitle: 'Google Ads 策略企劃簡報',
+      desc: '以廣告目標、受眾規劃、投放策略與成效追蹤為核心，整理成可對外提案與內部溝通使用的企劃簡報。',
+      file: '/presentations/gas-ad-plan-report.pptx',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
+      tags: ['Presentation', 'Google Ads'],
+    },
+    {
+      title: 'GAS數據簡報',
+      subtitle: '廣告數據分析與成效彙整',
+      desc: '將廣告數據、趨勢洞察與優化方向整理為清楚的簡報脈絡，協助快速掌握投放成效與後續決策重點。',
+      file: '/presentations/gas-data-presentation.pptx',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200',
+      tags: ['Presentation', 'Analytics'],
     },
   ];
 
@@ -380,6 +405,37 @@ const App = () => {
                 </div>
               </div>
             </div>
+
+            {presentationCases.map((presentation, index) => (
+              <div
+                key={presentation.title}
+                className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-24 group cursor-pointer`}
+                onClick={() => setActivePresentation(presentation)}
+              >
+                <div className="w-full lg:w-3/5 overflow-hidden bg-neutral-900 relative rounded-sm">
+                  <div className="aspect-[4/3] w-full bg-neutral-800">
+                    <img
+                      src={presentation.image}
+                      alt={presentation.title}
+                      className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                    />
+                  </div>
+                </div>
+                <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                  <div className="flex gap-3 mb-6">
+                    {presentation.tags.map((tag) => (
+                      <span key={tag} className="text-xs uppercase tracking-widest text-neutral-500 border border-neutral-700 px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold mb-2 group-hover:text-purple-300 transition-colors">{presentation.title}</h3>
+                  <h4 className="text-xl font-medium text-neutral-400 mb-4">{presentation.subtitle}</h4>
+                  <p className="text-neutral-400 font-light leading-relaxed mb-8">{presentation.desc}</p>
+                  <div className="inline-flex items-center text-sm uppercase tracking-widest font-bold text-white group-hover:text-purple-300 transition-colors w-max">
+                    View Deck / 查看簡報 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -592,6 +648,51 @@ const App = () => {
             alt={activeCertificate.title}
             className="relative z-10 max-h-[88vh] max-w-full bg-white object-contain shadow-2xl"
           />
+        </div>
+      )}
+      {activePresentation && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activePresentation.title}
+        >
+          <button
+            type="button"
+            onClick={() => setActivePresentation(null)}
+            className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:bg-neutral-200 transition-colors"
+            aria-label="Close presentation"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            className="absolute inset-0 z-0 cursor-default"
+            onClick={() => setActivePresentation(null)}
+            aria-label="Close presentation preview"
+          />
+          <div className="relative z-10 w-full max-w-6xl h-[84vh] bg-neutral-950 text-white shadow-2xl flex flex-col">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-neutral-800 px-5 md:px-6 py-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] font-bold text-neutral-500 mb-1">Presentation Case</p>
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight">{activePresentation.title}</h2>
+              </div>
+              <a
+                href={activePresentation.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs uppercase tracking-widest font-bold text-neutral-400 hover:text-white transition-colors"
+              >
+                Open PPTX / 開啟簡報
+              </a>
+            </div>
+            <iframe
+              title={activePresentation.title}
+              src={getPresentationViewerUrl(activePresentation.file)}
+              className="w-full flex-1 bg-white"
+              allowFullScreen
+            />
+          </div>
         </div>
       )}
       {isPrivacyOpen && (
