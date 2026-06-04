@@ -637,6 +637,13 @@ const App = () => {
                 <a href="https://www.threads.com/@erin19921122?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><ThreadsIcon className="w-4 h-4" /></a>
                 <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
               </div>
+              <div className="mt-10 border-t border-neutral-900 pt-8">
+                <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-white mb-4">AI & Analytics Certifications</h3>
+                <p className="text-sm leading-7 text-neutral-400 font-medium max-w-2xl">
+                  我將 AI 輔助開發、網站數據追蹤與轉換優化應用在實際專案中<br className="hidden sm:block" />
+                  協助客戶建立更有效率、可衡量成效的數位系統。
+                </p>
+              </div>
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
                   <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">GOOGLE / 專業認證書連結</h4>
@@ -672,13 +679,6 @@ const App = () => {
                     ))}
                   </ul>
                 </div>
-              </div>
-              <div className="mt-10 border-t border-neutral-900 pt-8">
-                <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-white mb-4">AI & Analytics Certifications</h3>
-                <p className="text-sm leading-7 text-neutral-400 font-medium max-w-2xl">
-                  我將 AI 輔助開發、網站數據追蹤與轉換優化應用在實際專案中<br className="hidden sm:block" />
-                  協助客戶建立更有效率、可衡量成效的數位系統。
-                </p>
               </div>
             </div>
             {/* 更新後的雙語 Navigation 區塊 */}
