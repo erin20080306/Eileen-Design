@@ -127,6 +127,24 @@ const App = () => {
     },
   ];
 
+  const claudeCertificates = [
+    {
+      title: 'Claude 101 Certificate of Completion',
+      image: '/certificates/claude-101-certificate.png',
+      label: 'Claude 101 / Claude 入門證書',
+    },
+    {
+      title: 'AI Fluency: Framework & Foundations Certificate',
+      image: '/certificates/ai-fluency-foundations.png',
+      label: 'AI Fluency / AI 流暢度基礎',
+    },
+    {
+      title: 'Claude 101 Validation Information',
+      image: '/certificates/claude-101-validation.png',
+      label: 'Claude Validation / Claude 驗證資訊',
+    },
+  ];
+
   const presentationCases = [
     {
       title: 'GAS廣告企劃報告',
@@ -610,22 +628,41 @@ const App = () => {
                 <a href="https://www.threads.com/@erin19921122?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><ThreadsIcon className="w-4 h-4" /></a>
                 <a href="#" className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-colors"><Linkedin className="w-4 h-4" /></a>
               </div>
-              <div className="mt-6">
-                <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">GOOGLE / 專業認證書連結</h4>
-                <ul className="space-y-3">
-                  {certificates.map((certificate) => (
-                    <li key={certificate.title}>
-                      <button
-                        type="button"
-                        onClick={() => setActiveCertificate(certificate)}
-                        title={certificate.title}
-                        className="text-neutral-400 hover:text-white text-sm transition-colors text-left whitespace-nowrap"
-                      >
-                        {certificate.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">GOOGLE / 專業認證書連結</h4>
+                  <ul className="space-y-3">
+                    {certificates.map((certificate) => (
+                      <li key={certificate.title}>
+                        <button
+                          type="button"
+                          onClick={() => setActiveCertificate(certificate)}
+                          title={certificate.title}
+                          className="text-neutral-400 hover:text-white text-sm transition-colors text-left whitespace-nowrap"
+                        >
+                          {certificate.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">CLAUDE / AI 證書連結</h4>
+                  <ul className="space-y-3">
+                    {claudeCertificates.map((certificate) => (
+                      <li key={certificate.title}>
+                        <button
+                          type="button"
+                          onClick={() => setActiveCertificate(certificate)}
+                          title={certificate.title}
+                          className="text-neutral-400 hover:text-white text-sm transition-colors text-left whitespace-nowrap"
+                        >
+                          {certificate.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
             {/* 更新後的雙語 Navigation 區塊 */}
