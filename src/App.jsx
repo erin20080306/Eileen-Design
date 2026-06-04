@@ -29,6 +29,7 @@ const App = () => {
   const [activePresentation, setActivePresentation] = useState(null);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [servicesIntroVisible, setServicesIntroVisible] = useState(false);
 
   // 處理進場動畫與導覽列滾動效果
   useEffect(() => {
@@ -36,6 +37,25 @@ const App = () => {
     const handleScroll = () => { setScrolled(window.scrollY > 80); };
     window.addEventListener('scroll', handleScroll);
     return () => { window.removeEventListener('scroll', handleScroll); clearTimeout(timer); };
+  }, []);
+
+  useEffect(() => {
+    const element = document.getElementById('services-intro-copy');
+    if (!element) { return undefined; }
+    if (!('IntersectionObserver' in window)) {
+      setServicesIntroVisible(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setServicesIntroVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.35 });
+
+    observer.observe(element);
+    return () => observer.disconnect();
   }, []);
 
   const handleBookingSubmit = async (e) => {
@@ -276,14 +296,14 @@ const App = () => {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
             </div>
-            <div className="w-full max-w-xl border-l border-neutral-200 pl-5 space-y-3 md:mt-10">
-              <div className="space-y-1">
+            <div id="services-intro-copy" className="w-full max-w-xl border-l border-neutral-200 pl-5 space-y-3 md:mt-10">
+              <div className={`space-y-1 transition-all duration-700 ease-out ${servicesIntroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
                 <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">I build modern web applications with React, Next.js,</p>
                 <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">TypeScript, APIs, databases, and cloud deployment.</p>
                 <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">My projects focus on clean UI, measurable performance,</p>
                 <p className="text-sm leading-6 text-neutral-800 font-semibold tracking-[0.01em] sm:whitespace-nowrap">and business-oriented results.</p>
               </div>
-              <div className="space-y-1">
+              <div className={`space-y-1 transition-all duration-700 ease-out ${servicesIntroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`} style={{ transitionDelay: '180ms' }}>
                 <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">我使用 React、Next.js、TypeScript、API、</p>
                 <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">資料庫與雲端部署打造現代化網站與應用程式。</p>
                 <p className="text-sm leading-6 text-neutral-700 font-semibold tracking-[0.01em] sm:whitespace-nowrap">我的作品不只注重介面設計，也重視效能、</p>
