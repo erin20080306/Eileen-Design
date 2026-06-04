@@ -275,11 +275,15 @@ const App = () => {
               <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Expertise</span>
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
-              <div className="mt-6 border-l border-neutral-200 pl-5 space-y-3">
-                <p className="text-sm leading-7 text-neutral-600 font-light">I build modern web applications with React, Next.js, TypeScript, APIs, databases, and cloud deployment.</p>
-                <p className="text-sm leading-7 text-neutral-600 font-light">My projects focus on clean UI, measurable performance, and business-oriented results.</p>
-                <p className="text-sm leading-7 text-neutral-500 font-light">我使用 React、Next.js、TypeScript、API、資料庫與雲端部署打造現代化網站與應用程式。</p>
-                <p className="text-sm leading-7 text-neutral-500 font-light">我的作品不只注重介面設計，也重視效能、數據追蹤與商業轉換成果。</p>
+              <div className="mt-5 border-l border-neutral-200 pl-5 space-y-1.5">
+                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">I build modern web applications with React, Next.js,</p>
+                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">TypeScript, APIs, databases, and cloud deployment.</p>
+                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">My projects focus on clean UI, measurable performance,</p>
+                <p className="text-sm leading-6 text-neutral-700 font-medium sm:whitespace-nowrap">and business-oriented results.</p>
+                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">我使用 React、Next.js、TypeScript、API、</p>
+                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">資料庫與雲端部署打造現代化網站與應用程式。</p>
+                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">我的作品不只注重介面設計，也重視效能、</p>
+                <p className="text-sm leading-6 text-neutral-600 font-medium sm:whitespace-nowrap">數據追蹤與商業轉換成果。</p>
               </div>
             </div>
           </div>
