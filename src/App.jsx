@@ -309,6 +309,17 @@ const App = () => {
               </div>
             ))}
           </div>
+          <div className="mt-10 border-t border-neutral-200 pt-8 max-w-xl">
+            <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-neutral-400 mb-5">TECH USAGE / 技術使用</h3>
+            <ul className="space-y-4">
+              {technologyUses.map((item) => (
+                <li key={item.title}>
+                  <h4 className="text-sm font-semibold text-neutral-900 mb-1">{item.title}</h4>
+                  <p className="text-sm leading-6 text-neutral-600 font-medium">技術：{item.tech}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -453,23 +464,6 @@ const App = () => {
                 </div>
               </div>
             ))}
-          </div>
-          <div className="mt-16 border-t border-neutral-200 pt-10">
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-              <div>
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-bold mb-3 block">Tech Usage</span>
-                <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-neutral-900">技術使用</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 md:w-3/4">
-                {technologyUses.map((item, index) => (
-                  <div key={item.title} className="border-l border-neutral-200 pl-5">
-                    <p className="text-xs tracking-widest text-neutral-400 font-bold mb-2">{String(index + 1).padStart(2, '0')}</p>
-                    <h4 className="text-sm font-bold text-neutral-900 mb-2">{item.title}</h4>
-                    <p className="text-sm leading-6 text-neutral-500 font-light">技術：{item.tech}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
