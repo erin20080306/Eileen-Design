@@ -290,7 +290,7 @@ const App = () => {
             <div className="clip-wrapper"><span className={`block ${isLoaded ? 'animate-mask-reveal delay-600' : ''}`}>AESTHETICS.</span></div>
           </h1>
           <p className={`text-lg md:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed mb-12 font-light ${isLoaded ? 'animate-fade-up delay-800' : 'opacity-0'}`}>
-            艾琳設計工作室。將複雜的程式邏輯與商業需求，轉化為優雅且直覺的數位體驗。從一頁式網站到系統開發，為您的品牌打造頂級數位門面。
+            艾琳程式設計工作室。將複雜的程式邏輯與商業需求，轉化為優雅且直覺的數位體驗。從一頁式網站到系統開發，為您的品牌打造頂級數位門面。
           </p>
           <div className={`flex flex-col sm:flex-row items-center gap-6 ${isLoaded ? 'animate-fade-up delay-800' : 'opacity-0'}`}>
             <button onClick={() => scrollToSection('booking')} className="px-10 py-4 bg-neutral-900 text-white text-sm tracking-widest uppercase font-bold hover:bg-neutral-800 transition-colors flex items-center group">
@@ -314,7 +314,7 @@ const App = () => {
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
               <div className="mt-8 space-y-4">
-                <p className="text-3xl md:text-4xl font-black tracking-tighter leading-tight text-neutral-900">
+                <p className="text-2xl md:text-3xl font-black tracking-tighter leading-tight text-neutral-900">
                   我協助品牌與創作者打造高轉換網站、自動化工具與 AI 輔助工作流程
                 </p>
                 <p className="text-base md:text-lg leading-8 text-neutral-600 font-medium">
