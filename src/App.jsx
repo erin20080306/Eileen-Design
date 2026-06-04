@@ -315,7 +315,8 @@ const App = () => {
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
               <div className="mt-8 space-y-4">
                 <p className="text-2xl md:text-3xl font-black tracking-tighter leading-tight text-neutral-900">
-                  我協助品牌與創作者打造高轉換網站、自動化工具與 AI 輔助工作流程
+                  我協助品牌與創作者打造高轉換網站<br />
+                  自動化工具與 AI 輔助工作流程
                 </p>
                 <p className="text-base md:text-lg leading-8 text-neutral-600 font-medium">
                   結合網頁設計、前端開發、Google Sheet API、報表自動化、金流串接與 AI 工具，讓網站不只是好看，也能帶來詢問、收單與效率提升。
