@@ -644,7 +644,7 @@ const App = () => {
                   協助客戶建立更有效率、可衡量成效的數位系統。
                 </p>
               </div>
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="mt-6 flex flex-col sm:flex-row gap-8 sm:gap-24">
                 <div>
                   <h4 className="text-xs uppercase tracking-widest font-bold text-neutral-600 mb-4 whitespace-nowrap">GOOGLE / 專業認證書連結</h4>
                   <ul className="space-y-3">
