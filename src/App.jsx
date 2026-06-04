@@ -313,6 +313,14 @@ const App = () => {
               <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Expertise</span>
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
+              <div className="mt-8 space-y-4">
+                <p className="text-3xl md:text-4xl font-black tracking-tighter leading-tight text-neutral-900">
+                  我協助品牌與創作者打造高轉換網站、自動化工具與 AI 輔助工作流程
+                </p>
+                <p className="text-base md:text-lg leading-8 text-neutral-600 font-medium">
+                  結合網頁設計、前端開發、Google Sheet API、報表自動化、金流串接與 AI 工具，讓網站不只是好看，也能帶來詢問、收單與效率提升。
+                </p>
+              </div>
             </div>
             <div id="services-intro-copy" className="w-full max-w-xl border-l border-neutral-200 pl-5 space-y-3 md:mt-10">
               <div className={`space-y-1 transition-all duration-700 ease-out ${servicesIntroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
