@@ -126,6 +126,13 @@ const App = () => {
     },
   ];
 
+  const technologyUses = [
+    { title: 'Marketing Landing Page', tech: 'Next.js、TypeScript、Tailwind、GA4、Vercel' },
+    { title: 'Analytics Dashboard', tech: 'React、Chart.js、API、資料庫' },
+    { title: 'AI Ad Copy Generator', tech: 'Next.js、OpenAI API、TypeScript' },
+    { title: 'Booking / Contact System', tech: 'React、表單驗證、Email API、資料儲存' },
+  ];
+
   const privacySections = [
     {
       title: '資料蒐集',
@@ -268,6 +275,12 @@ const App = () => {
               <span className="text-sm tracking-[0.2em] uppercase text-neutral-400 font-bold mb-4 block">Expertise</span>
               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-neutral-900 mb-6">全方位數位服務</h2>
               <p className="text-neutral-500 font-light leading-relaxed">我們不只做設計，更提供堅實的技術後盾。讓美感與功能完美結合，助您的業務高效運轉。</p>
+              <div className="mt-6 border-l border-neutral-200 pl-5 space-y-3">
+                <p className="text-sm leading-7 text-neutral-600 font-light">I build modern web applications with React, Next.js, TypeScript, APIs, databases, and cloud deployment.</p>
+                <p className="text-sm leading-7 text-neutral-600 font-light">My projects focus on clean UI, measurable performance, and business-oriented results.</p>
+                <p className="text-sm leading-7 text-neutral-500 font-light">我使用 React、Next.js、TypeScript、API、資料庫與雲端部署打造現代化網站與應用程式。</p>
+                <p className="text-sm leading-7 text-neutral-500 font-light">我的作品不只注重介面設計，也重視效能、數據追蹤與商業轉換成果。</p>
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12 border-t border-neutral-200 pt-16">
@@ -436,6 +449,23 @@ const App = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-16 border-t border-neutral-200 pt-10">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+              <div>
+                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-bold mb-3 block">Tech Usage</span>
+                <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-neutral-900">技術使用</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-7 md:w-3/4">
+                {technologyUses.map((item, index) => (
+                  <div key={item.title} className="border-l border-neutral-200 pl-5">
+                    <p className="text-xs tracking-widest text-neutral-400 font-bold mb-2">{String(index + 1).padStart(2, '0')}</p>
+                    <h4 className="text-sm font-bold text-neutral-900 mb-2">{item.title}</h4>
+                    <p className="text-sm leading-6 text-neutral-500 font-light">技術：{item.tech}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
